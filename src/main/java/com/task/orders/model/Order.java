@@ -18,9 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.task.orders.repository.UserRepository;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
@@ -31,16 +29,14 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-    // @Autowired
-    // private UserRepository userRepository;
-
     @Id
     @Column(name = "id")
     @SequenceGenerator(name = "order_sequence", sequenceName = "order_sequence", allocationSize = 1)
     @GeneratedValue(strategy = SEQUENCE, generator = "order_sequence")
+    @JsonIgnore
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -59,11 +55,10 @@ public class Order {
         log.info("Creating entity: " + this);
     }
 
-    // public Order(Long user_id, String product, Integer quantity, BigDecimal price) {
-    //     // this.user = userRepository.findById(user_id)
-    //     //         .orElseThrow(() -> new IllegalArgumentException("Invalid user ID: " + user_id));
-    //     this.product = product;
-    //     this.quantity = quantity;
-    //     this.price = price;
-    // }
+    public Order(User user, String product, Integer quantity, BigDecimal price) {
+        this.user = user;
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
 }

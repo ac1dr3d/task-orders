@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.security.core.Transient;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,7 +23,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Transient
 @Slf4j
 @Entity(name = "User")
 @Table(name = "users")
@@ -46,10 +45,12 @@ public class User {
 
         @NotBlank
         @Size(max = 120)
+        @JsonIgnore
         private String password;
 
         @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+        @JsonIgnore
         private Set<Role> roles = new HashSet<>();
 
         @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
