@@ -60,18 +60,21 @@ class OrderControllerTest {
         order.setProduct("Laptop");
         order.setQuantity(2);
         order.setPrice(new BigDecimal("1500.00"));
+        order.setStatus("PENDING");
 
         orderRequest = new OrderRequest();
         orderRequest.setUser_id(1L); // Assuming the request still uses user ID
         orderRequest.setProduct("Laptop");
         orderRequest.setQuantity(2);
         orderRequest.setPrice(new BigDecimal("1500.00"));
+        orderRequest.setStatus("PENDING");
     }
 
     @Test
     @WithMockUser(roles = { "USER" })
     void testCreateOrder() throws Exception {
-        when(orderService.createOrder(any(Long.class), any(String.class), any(Integer.class), any(BigDecimal.class)))
+        when(orderService.createOrder(any(Long.class), any(String.class), any(Integer.class), any(BigDecimal.class),
+                any(String.class)))
                 .thenReturn(order);
 
         // log.info("Creating order for user with ID: {}", orderRequest);

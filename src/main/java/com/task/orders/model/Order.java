@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hazelcast.partition.strategy.StringAndPartitionAwarePartitioningStrategy;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
@@ -40,7 +41,7 @@ public class Order {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Size(max = 5)
+    @Size(min = 3, max = 30)
     @Column(nullable = false)
     private String product;
 
@@ -50,15 +51,20 @@ public class Order {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
+    @Size(min = 3, max = 15)
+    @Column(nullable = false)
+    private String status;
+
     @PostPersist
     public void logCreation() {
         log.info("Creating entity: " + this);
     }
 
-    public Order(User user, String product, Integer quantity, BigDecimal price) {
+    public Order(User user, String product, Integer quantity, BigDecimal price, String status) {
         this.user = user;
         this.product = product;
         this.quantity = quantity;
         this.price = price;
+        this.status = status;
     }
 }

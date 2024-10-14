@@ -19,13 +19,13 @@ public class OrderService {
     private UserRepository userRepository;
 
     // Method to create an order for a user
-    public Order createOrder(Long userId, String product, Integer quantity, BigDecimal price) {
+    public Order createOrder(Long userId, String product, Integer quantity, BigDecimal price, String status) {
         // Fetch the user by user_id
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
 
         // Create a new order and associate it with the fetched user
-        Order order = new Order(user, product, quantity, price);
+        Order order = new Order(user, product, quantity, price, status);
 
         // Save the order to the database
         return orderRepository.save(order);

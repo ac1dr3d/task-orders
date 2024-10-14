@@ -32,7 +32,7 @@ public class OrderController {
 
         // Call the service to create the order
         Order createdOrder = orderService.createOrder(order.getUser_id(), order.getProduct(), order.getQuantity(),
-                order.getPrice());
+                order.getPrice(), order.getStatus());
 
         return ResponseEntity.ok(createdOrder);
     }

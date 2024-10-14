@@ -19,4 +19,7 @@ public class OrderRequest {
     @NotBlank
     private BigDecimal price;
 
+    @NotBlank
+    private String status;
+
 }
