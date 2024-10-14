@@ -6,6 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.task.orders.model.Order;
+import com.task.orders.producers.KafkaProducer;
 import com.task.orders.repository.OrderRepository;
 import com.task.orders.request.OrderRequest;
 import com.task.orders.security.services.OrderService;
@@ -24,6 +25,9 @@ public class OrderController {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private KafkaProducer kafkaProducer;
+
     @PostMapping("")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<Order> createOrder(@Valid @RequestBody OrderRequest order) {
@@ -34,6 +38,10 @@ public class OrderController {
         Order createdOrder = orderService.createOrder(order.getUser_id(), order.getProduct(), order.getQuantity(),
                 order.getPrice(), order.getStatus());
 
+        if (createdOrder != null)
+            kafkaProducer.sendMessage(
+                    "Created order for user with ID: " + order.getUser_id() + " and order ID: " + createdOrder.getId());
+
         return ResponseEntity.ok(createdOrder);
     }
 
@@ -41,7 +49,7 @@ public class OrderController {
     @GetMapping("")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<Iterable<Order>> getAllOrders() {
-        return ResponseEntity.ok(orderRepository.findAll());  // Using findAll() directly
+        return ResponseEntity.ok(orderRepository.findAll()); // Using findAll() directly
     }
 
 }

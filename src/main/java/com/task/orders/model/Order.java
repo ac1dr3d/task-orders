@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hazelcast.partition.strategy.StringAndPartitionAwarePartitioningStrategy;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
