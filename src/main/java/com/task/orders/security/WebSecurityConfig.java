@@ -36,6 +36,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/orders/**").hasAnyRole("MODERATOR", "ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/orders/**").hasAnyRole("MODERATOR", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/orders/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated());
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
