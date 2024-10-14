@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.task.orders.controllers.OrderController;
 import com.task.orders.model.Order;
 import com.task.orders.model.User;
+import com.task.orders.producers.KafkaProducer;
 import com.task.orders.repository.OrderRepository;
 import com.task.orders.request.OrderRequest;
 import com.task.orders.security.services.OrderService;
@@ -40,6 +41,9 @@ class OrderControllerTest {
 
     @MockBean
     private OrderRepository orderRepository;
+
+    @MockBean
+    private KafkaProducer kafkaProducer;
 
     @Autowired
     private ObjectMapper objectMapper;
