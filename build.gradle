@@ -47,3 +47,11 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar {
+    archiveFileName = 'task-orders.jar'
+}
+
+jar {
+    enabled = false
+}
